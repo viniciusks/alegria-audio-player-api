@@ -5,6 +5,15 @@ const app = express();
 // Middlewares
 app.use(express.json());
 
+/**
+ * Album Structure
+ * ID - uuid
+ * Name - string
+ * Artist - string
+ * musics - String's list
+ */
+app.post("/album", (req, res) => {});
+
 // Routes
 app.get("/", (req, res) => {
   return res.json({
