@@ -1,15 +1,11 @@
 {
   "name": "alegria-audio-player-api",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "index.js",
+  "repository": "git@github.com:viniciusks/alegria-audio-player-api.git",
+  "author": "Vinicius Kremer Santos <vinicius.kremer@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "dev": "nodemon src/index.js"
-  },
   "dependencies": {
     "express": "^4.18.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.19"
   }
 }
