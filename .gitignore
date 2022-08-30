@@ -1,2 +1,7 @@
+# Ignorando as dependências
 node_modules/
 node_modules/*
+
+# Ignorando a pasta de build
+dist/
+dist/*
