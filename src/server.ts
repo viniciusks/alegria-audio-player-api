@@ -1,10 +1,12 @@
 import express from "express";
-import { createAlbum } from "./routes";
+import { albumsRoutes } from "./routes/albums.routes";
 
 const app = express();
 
-app.get("/", createAlbum);
+// Middleware
+app.use(express.json());
 
-app.listen(3000, () => {
-  console.log("Listing in 3000");
-});
+// Routes
+app.use("/albums", albumsRoutes);
+
+app.listen(3000, () => console.log("Server is running!"));

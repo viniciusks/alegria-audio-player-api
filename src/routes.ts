@@ -67,6 +67,7 @@ export function createAlbum(req: Request, res: Response) {
         file: "https://firebasestorage.googleapis.com/v0/b/portal-alegria-crista.appspot.com/o/musicas%2FRAK%2F2022%2FAnimadas%2FUg-bug.mp3?alt=media&token=b99df7f6-1e01-47c1-9f06-74bcad61783b",
       },
     ],
+    link: "teste",
   });
 
   return res.send();
