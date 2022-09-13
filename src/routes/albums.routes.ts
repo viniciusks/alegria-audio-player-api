@@ -1,26 +1,30 @@
 import { Router, Request, Response } from "express";
-import { v4 as uuidV4 } from "uuid";
-import { Album } from "../model/Album";
+import { AlbumsRepository } from "../repositories/AlbumsRepository";
 
 const albumsRoutes = Router();
-
-const albums: Album[] = [];
+const albumRepository = new AlbumsRepository();
 
 albumsRoutes.post("/", (request: Request, response: Response) => {
   const { name, owner, musics, link } = request.body;
-  const album: Album = {
-    id: uuidV4(),
-    name,
-    owner,
-    musics,
-    link,
-    createdAt: new Date(),
-  };
 
-  albums.push(album);
+  let albumAlreadyExists = albumRepository.findByName(name);
+
+  if (albumAlreadyExists) {
+    return response.status(400).json({
+      message: "Album already exists.",
+    });
+  }
+
+  albumRepository.create({ name, owner, musics, link });
 
   return response.status(201).json({
     message: "Album created!",
+  });
+});
+
+albumsRoutes.get("/", (request: Request, response: Response) => {
+  return response.status(200).json({
+    data: albumRepository.get(),
   });
 });
 
