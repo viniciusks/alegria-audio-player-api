@@ -1,4 +1,4 @@
-import { v4 as uuidV4 } from "uuid";
+import { ObjectId } from "mongodb";
 
 export class Album {
   constructor(
@@ -7,10 +7,6 @@ export class Album {
     public musics: Array<object>,
     public link: string,
     public createdAt: Date,
-    public _id?: string
-  ) {
-    if (!this._id) {
-      this._id = uuidV4();
-    }
-  }
+    public _id?: ObjectId
+  ) {}
 }

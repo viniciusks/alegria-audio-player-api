@@ -5,3 +5,6 @@ node_modules/*
 # Ignorando a pasta de build
 dist/
 dist/*
+
+# Ignorando env
+.env
