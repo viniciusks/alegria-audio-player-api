@@ -1,0 +1,5 @@
+import { Logger } from "tslog";
+
+export const log: Logger = new Logger({
+  dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+});

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
-import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
 import { Album } from "../model/Album";
+import { log } from "../services/log.service"
 
 const albumsRoutes = Router();
 
@@ -14,16 +14,23 @@ albumsRoutes.post("/", async (request: Request, response: Response) => {
       throw new Error("Album already exists!");
     } else {
       const result = await collections.albums.insertOne(newAlbum);
-      result
-        ? response.status(201).json({
-            message: `Successfully created a new album with id ${result.insertedId}`,
-          })
-        : response.status(500).json({
-            message: "Failed to create a new album.",
-          });
+
+      if (result) {
+        log.info(
+          `Successfully created a new album with id ${result.insertedId}`
+        );
+        response.status(201).json({
+          message: `Successfully created a new album with id ${result.insertedId}`,
+        });
+      } else {
+        log.error("Failed to create a new album.");
+        response.status(500).json({
+          message: "Failed to create a new album.",
+        });
+      }
     }
   } catch (error) {
-    console.error(error);
+    log.fatal(error);
     response.status(400).json({
       message: error.message,
     });
