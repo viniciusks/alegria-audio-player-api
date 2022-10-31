@@ -4,10 +4,10 @@ import { connectToDatabase } from "./services/database.service";
 import { log } from "./services/log.service";
 import cors from "cors";
 
-const allowedOrigins = ["http://localhost:5500"];
-
 const options: cors.CorsOptions = {
-  origin: allowedOrigins,
+  origin: "*",
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 const app = express();
