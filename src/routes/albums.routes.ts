@@ -16,9 +16,7 @@ albumsRoutes.post("/", async (request: Request, response: Response) => {
       const result = await collections.albums.insertOne(newAlbum);
 
       if (result) {
-        log.info(
-          `Successfully created a new album with id ${result.insertedId}`
-        );
+        log.info("Post albums route");
         response.status(201).json({
           message: `Successfully created a new album with id ${result.insertedId}`,
         });
@@ -41,11 +39,13 @@ albumsRoutes.get("/", async (request: Request, response: Response) => {
   try {
     const albums = (await collections.albums.find({}).toArray()) as Album[];
 
+    log.info("Get albums route");
     response.status(200).json({
       message: "Action executed!",
       data: albums,
     });
   } catch (error) {
+    log.error("Failed to get the albums.");
     console.error(error);
     response.status(500).json({
       message: error.message,
