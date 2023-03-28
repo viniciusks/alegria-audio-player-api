@@ -40,10 +40,7 @@ albumsRoutes.get("/", async (request: Request, response: Response) => {
     const albums = (await collections.albums.find({}).toArray()) as Album[];
 
     log.info("Get albums route");
-    response.status(200).json({
-      message: "Action executed!",
-      data: albums,
-    });
+    response.status(200).json(albums);
   } catch (error) {
     log.error("Failed to get the albums.");
     console.error(error);
