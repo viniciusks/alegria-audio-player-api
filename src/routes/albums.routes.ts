@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { collections } from "../services/database.service";
 import { Album } from "../model/Album";
-import { log } from "../services/log.service"
+import { log } from "../services/log.service";
 
 const albumsRoutes = Router();
 
@@ -40,7 +40,10 @@ albumsRoutes.get("/", async (request: Request, response: Response) => {
     const albums = (await collections.albums.find({}).toArray()) as Album[];
 
     log.info("Get albums route");
-    response.status(200).json(albums);
+    response.status(200).json({
+      message: "Action executed!",
+      data: albums,
+    });
   } catch (error) {
     log.error("Failed to get the albums.");
     console.error(error);
