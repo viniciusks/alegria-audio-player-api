@@ -35,6 +35,21 @@ albumsRoutes.post("/", async (request: Request, response: Response) => {
   }
 });
 
+// TODO: Terminar updateOne
+albumsRoutes.put("/", async (request: Request, response: Response) => {
+  try {
+    const existAlbum = request.body as Album;
+    const album = await collections.albums.findOne({ name: existAlbum.name });
+
+    const result = collections.albums.updateOne(existAlbum, album);
+  } catch (error) {
+    log.fatal(error);
+    response.status(400).json({
+      message: error.message,
+    });
+  }
+});
+
 albumsRoutes.get("/", async (request: Request, response: Response) => {
   try {
     const albums = (await collections.albums.find({}).toArray()) as Album[];
