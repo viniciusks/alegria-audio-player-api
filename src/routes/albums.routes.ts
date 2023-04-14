@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { collections } from "../services/database.service";
 import { Album } from "../model/Album";
 import { log } from "../services/log.service";
+import { ObjectId } from "mongodb";
 
 const albumsRoutes = Router();
 
@@ -38,10 +39,19 @@ albumsRoutes.post("/", async (request: Request, response: Response) => {
 // TODO: Terminar updateOne
 albumsRoutes.put("/", async (request: Request, response: Response) => {
   try {
+    // Preciso separar o _id do body para realizar o update
     const existAlbum = request.body as Album;
-    const album = await collections.albums.findOne({ name: existAlbum.name });
+    const existAlbumId = new ObjectId(existAlbum._id);
+    const album = await collections.albums.findOne({ _id: existAlbumId });
 
-    const result = collections.albums.updateOne(existAlbum, album);
+    const result = collections.albums.updateOne(
+      album,
+      { $set: existAlbum },
+      function (err, res) {
+        if (err) throw err;
+        console.log("1 document updated");
+      }
+    );
   } catch (error) {
     log.fatal(error);
     response.status(400).json({
