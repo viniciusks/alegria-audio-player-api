@@ -2,6 +2,8 @@ import { Router, Request, Response } from "express";
 import { collections } from "../services/database.service";
 import { Album } from "../model/Album";
 import { log } from "../services/log.service";
+import { ObjectId } from "mongodb";
+import { verify } from "crypto";
 
 const albumsRoutes = Router();
 
@@ -27,6 +29,43 @@ albumsRoutes.post("/", async (request: Request, response: Response) => {
         });
       }
     }
+  } catch (error) {
+    log.fatal(error);
+    response.status(400).json({
+      message: error.message,
+    });
+  }
+});
+
+albumsRoutes.put("/", async (request: Request, response: Response) => {
+  try {
+    const existAlbum = request.body as Album;
+    const album = await collections.albums.findOne({
+      _id: new ObjectId(existAlbum._id),
+    });
+
+    // Executando update dentro do MongoDB
+    collections.albums.updateOne(
+      album,
+      {
+        $set: {
+          name: existAlbum.name,
+          owner: existAlbum.owner,
+          musics: existAlbum.musics,
+          link: existAlbum.link,
+        },
+      },
+      function (err, res) {
+        if (err) throw err;
+        log.info(`Document updated: ${JSON.stringify(existAlbum)}`);
+      }
+    );
+
+    // Rertono da api - PUT
+    response.status(200).json({
+      message: "Document update success!",
+      data: existAlbum,
+    });
   } catch (error) {
     log.fatal(error);
     response.status(400).json({
