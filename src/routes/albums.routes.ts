@@ -3,6 +3,7 @@ import { collections } from "../services/database.service";
 import { Album } from "../model/Album";
 import { log } from "../services/log.service";
 import { ObjectId } from "mongodb";
+import { verify } from "crypto";
 
 const albumsRoutes = Router();
 
@@ -36,22 +37,35 @@ albumsRoutes.post("/", async (request: Request, response: Response) => {
   }
 });
 
-// TODO: Terminar updateOne
 albumsRoutes.put("/", async (request: Request, response: Response) => {
   try {
-    // Preciso separar o _id do body para realizar o update
     const existAlbum = request.body as Album;
-    const existAlbumId = new ObjectId(existAlbum._id);
-    const album = await collections.albums.findOne({ _id: existAlbumId });
+    const album = await collections.albums.findOne({
+      _id: new ObjectId(existAlbum._id),
+    });
 
-    const result = collections.albums.updateOne(
+    // Executando update dentro do MongoDB
+    collections.albums.updateOne(
       album,
-      { $set: existAlbum },
+      {
+        $set: {
+          name: existAlbum.name,
+          owner: existAlbum.owner,
+          musics: existAlbum.musics,
+          link: existAlbum.link,
+        },
+      },
       function (err, res) {
         if (err) throw err;
-        console.log("1 document updated");
+        log.info(`Document updated: ${JSON.stringify(existAlbum)}`);
       }
     );
+
+    // Rertono da api - PUT
+    response.status(200).json({
+      message: "Document update success!",
+      data: existAlbum,
+    });
   } catch (error) {
     log.fatal(error);
     response.status(400).json({
