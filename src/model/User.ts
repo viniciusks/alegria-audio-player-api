@@ -7,7 +7,7 @@ export class User {
     public country: string,
     public state: string,
     public city: string,
-    public role: string,
+    public roles: string[],
     public action: string,
     public artisticFormation: string,
     public professionalArt: string,
