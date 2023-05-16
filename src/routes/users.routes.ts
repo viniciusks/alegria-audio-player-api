@@ -51,6 +51,7 @@ usersRoutes.post("/", async (request: Request, response: Response) => {
         .set({
           name: user.name,
           birthday: user.birthday,
+          email: user.email,
           country: user.country,
           state: user.state,
           city: user.city,
@@ -93,6 +94,21 @@ usersRoutes.post("/", async (request: Request, response: Response) => {
       response.status(400).json({
         message: error.code,
       });
+    });
+});
+
+usersRoutes.get("/:uid", (request: Request, response: Response) => {
+  let uid = request.params.uid;
+
+  app
+    .firestore()
+    .collection("users")
+    .doc(uid)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        response.status(200).json(doc.data());
+      }
     });
 });
 
