@@ -13,12 +13,15 @@ usersRoutes.post("/login", async (request: Request, response: Response) => {
     .signInWithEmailAndPassword(email, password)
     .then((signResponse: any) => {
       let uid = signResponse.user.uid;
+      let email = signResponse.user.email;
+
       log.info(`User ${uid} signed!`);
 
       response.status(200).json({
         message: `User ${uid} signed!`,
         data: {
           uid,
+          email,
         },
       });
     })
