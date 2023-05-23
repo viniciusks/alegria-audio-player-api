@@ -6,7 +6,6 @@ export class Album {
     public owner: string,
     public musics: Array<object>,
     public link: string,
-    public createdAt: Date,
     public _id?: ObjectId
   ) {}
 }

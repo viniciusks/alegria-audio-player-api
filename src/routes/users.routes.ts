@@ -107,7 +107,14 @@ usersRoutes.get("/:uid", (request: Request, response: Response) => {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        response.status(200).json(doc.data());
+        response.status(200).json({
+          message: "User founded!",
+          data: doc.data(),
+        });
+      } else {
+        response.status(404).json({
+          message: "User not found!",
+        });
       }
     });
 });
